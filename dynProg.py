@@ -2,12 +2,12 @@
 #into english words
 
 #Author: Mac Weinstock 
-#CIS 315 W '20
 
 #USAGE: python3 dynProg.py < [FILENAME]
 
 import sys
 
+#Read in 10k word dictionary 
 def readDict(file):
 	tempDict = []	
 
@@ -20,24 +20,24 @@ def readDict(file):
 
 	return tempDict
 
+#Store dictionary globally to improve performance (only need to read once)
 dictList = readDict("dictionary_10k_sample/diction10k.txt")
 
+#Search the dictionary for desired word
 def dictSearch(w):
-
 	for word in dictList:
 		word = word.strip()
 		if w == word:
 			return True
-
 	return False
 
-
+#Iterative method to split each word provided
 def split(string):
 	n = len(string)
 	splitAt = []
-
 	splArr = []
 
+	#Append the split word to stored array and the index of the split to another array
 	for i in range(0,n):
 		splArr.append(-1)
 		splitAt.append(0)
@@ -49,10 +49,8 @@ def split(string):
 		
 		for j in range(i, n):
 			if (splArr[j+1] == 1) and (dictSearch(string[i:j+1]) == True):
-				# print(string[i:j+1])
 				splArr[i] = 1
 				splitAt[i] = j+1
-				# break
 				
 	return splArr, splitAt
 
@@ -88,11 +86,13 @@ def main(file):
 
 	fLen = file[0]
 
+	#Parse the provided file
 	for line in file[1:]:
 		line = line.strip()
 		strList.append(line)
 
 	i = 1
+	#Print the desired output of split array into single words
 	for line in strList:
 	
 		l = len(line)
@@ -113,13 +113,6 @@ def main(file):
 
 		else:
 			print("NO, cannot be split\n")
-
-		# print("Memoized attempt:")
-
-		# if memo(0, line) == True:
-		#  	print("YES, can be split\n")
-		# else:
-		#  	print("NO, cannot be split\n")
 
 		i += 1
 
